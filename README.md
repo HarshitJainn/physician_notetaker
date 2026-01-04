@@ -2,39 +2,30 @@
 
 ## Overview
 
-This project implements an **AI-powered Physician Notetaker system** that automates medical documentation from doctor–patient conversations. The system extracts key clinical information, analyzes patient sentiment and intent, and generates structured medical notes to assist healthcare professionals.
+Medical documentation takes up a significant portion of physicians' time. This project aims to reduce that burden by automatically processing doctor-patient conversations and generating structured clinical notes. The system listens to conversations, identifies important medical information, understands patient emotions, and creates properly formatted documentation that doctors can review and use.
+
+## What Does It Do?
+
+The system has three main capabilities:
+
+**Medical Information Extraction**  
+The system reads through conversation transcripts and pulls out important clinical details like symptoms the patient mentions, any diagnoses discussed, treatments prescribed, and what the expected outcomes are. It uses SciSpacy (a specialized medical language processing tool) to recognize medical terms accurately and BART transformers to create concise summaries.
+
+**Understanding Patient Sentiment and Intent**  
+Beyond just extracting facts, the system tries to understand how the patient is feeling - whether they're anxious about their condition, feeling neutral, or reassured after the consultation. It also identifies what the patient wants from the conversation, like seeking reassurance or reporting new symptoms. This uses DistilBERT combined with some rule-based logic to make interpretations.
+
+**SOAP Note Generation**  
+Doctors typically document visits using the SOAP format (Subjective, Objective, Assessment, Plan). The system automatically structures the conversation into this format, making it easier for healthcare providers to review and file the notes. This combines NLP techniques with structured formatting rules.
 
 ---
 
-## System Components
-
-### 1. Medical NLP Summarization
-
-- Extracts **Symptoms, Diagnosis, Treatment, and Prognosis** from transcripts
-- Uses **SciSpacy** for medical Named Entity Recognition (NER)
-- Uses **Transformer-based summarization (BART)** to generate concise clinical summaries
-
-### 2. Sentiment & Intent Analysis
-
-- Classifies patient sentiment as **Anxious, Neutral, or Reassured**
-- Detects patient intent such as **Seeking reassurance** or **Reporting symptoms**
-- Uses **DistilBERT** along with rule-assisted logic for interpretability
-
-### 3. SOAP Note Generation
-
-- Converts transcripts into standard **SOAP (Subjective, Objective, Assessment, Plan)** format
-- Uses a hybrid approach combining NLP summarization and rule-based structuring
-- Ensures clinical readability and safety
-
----
-
-## Tech Stack
+## Technology Used
 
 - Python 3.9+
-- spaCy & SciSpacy
-- HuggingFace Transformers
-- KeyBERT
-- PyTorch
+- spaCy and SciSpacy (for medical text processing)
+- HuggingFace Transformers (BART and DistilBERT models)
+- KeyBERT (for keyword extraction)
+- PyTorch (deep learning framework)
 
 ---
 
@@ -43,104 +34,159 @@ This project implements an **AI-powered Physician Notetaker system** that automa
 ```
 Physician-Notetaker/
 │
-├── data/
+├── data/                           # Sample input files
 │   ├── sample_transcript.txt
 │   └── patient_utterances.txt
 │
-├── src/
-│   ├── preprocess.py
-│   ├── ner_extraction.py
-│   ├── keyword_extraction.py
-│   ├── summarization.py
-│   ├── sentiment.py
-│   ├── intent.py
-│   ├── soap_mapper.py
-│   ├── pipeline.py
-│   ├── pipeline_2.py
-│   └── pipeline_3.py
-│
-├── output/
+├── src/                            # Source code modules
+│   ├── preprocess.py              # Text cleaning and preprocessing
+│   ├── ner_extraction.py          # Medical entity recognition
+│   ├── keyword_extraction.py      # Important term extraction
+│   ├── summarization.py           # Text summarization
+│   ├── sentiment.py               # Sentiment classification
+│   ├── intent.py                  # Intent detection
+│   ├── soap_mapper.py             # SOAP note formatting
+│   ├── pipeline.py                # Main NLP pipeline
+│   ├── pipeline_ps2.py            # Sentiment analysis pipeline
+│   └── pipeline_ps3.py            # SOAP generation pipeline
+├── app.py                         # streamlit app
+├── output/                         # Generated results
 │   ├── structured_summary.json
 │   ├── sentiment_intent.json
 │   └── soap_note.json
 │
-├── requirements.txt
+├── requirements.txt                # Python dependencies
 └── README.md
 ```
 
 ---
 
-## Setup Instructions
+## Getting Started
 
-### Clone the Repository
+### Installation
+
+First, clone this repository and navigate to the project directory:
 
 ```bash
-git clone <repository-link>
+git clone <your-repository-link>
 cd Physician-Notetaker
 ```
 
-### Install Dependencies
+Install the required Python packages:
 
 ```bash
 pip install -r requirements.txt
+```
+
+You'll also need to install the SciSpacy medical model:
+
+```bash
 pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_md-0.5.4.tar.gz
 ```
 
-⚠️ **Note:** On the first run, large transformer models (BERT, BART) will be downloaded automatically. This may take a few minutes depending on internet speed.
+**Note:** The first time you run the system, it will download some large transformer models (BERT and BART). This is normal and might take a few minutes depending on your internet connection.
 
 ---
 
-## How to Run the Project
+## Running the System
 
-### Medical NLP Summarization
+The system has three separate pipelines you can run:
+
+### 1. Medical Information Extraction
 
 ```bash
 cd src
 python pipeline.py
 ```
 
-### Sentiment & Intent Analysis
+This will process the transcript and extract medical entities, keywords, and generate a summary.
+
+### 2. Sentiment and Intent Analysis
 
 ```bash
-python pipeline_ps2.py
+python pipeline_2.py
 ```
 
-### SOAP Note Generation
+This analyzes the emotional tone and intent behind patient statements.
+
+### 3. SOAP Note Generation
 
 ```bash
-python pipeline_ps3.py
+python pipeline_3.py
 ```
 
-All outputs will be saved in the `output/` directory.
+This creates a properly formatted SOAP note from the conversation.
+
+All results are automatically saved to the `output/` directory as JSON files.
 
 ---
+
+## Example Usage
+
+If you want to try the system quickly, here's a sample transcript you can use:
+
+```
+Doctor: Good morning! How are you feeling today?
+Patient: I'm a bit worried about my back pain, but it's better than before.
+Doctor: That's good to hear there's some improvement. When did you first notice the pain?
+Patient: It started about three weeks ago after I helped my friend move furniture.
+Doctor: I see. Have you received any treatment for it so far?
+Patient: Yes, I had physiotherapy sessions twice a week for the past two weeks.
+Doctor: And how has the physiotherapy been working for you?
+Patient: It's helping. The pain has reduced from about 8 out of 10 to maybe 4 out of 10 now.
+Doctor: That's significant improvement. Let me examine your back to see how things are progressing.
+Patient: Okay, thank you doctor.
+Doctor: Based on the examination and your progress, I'd recommend continuing physiotherapy for another two weeks. Also, try to avoid heavy lifting.
+Patient: Will do. Should I be worried about anything?
+Doctor: No, you're responding well to treatment. This type of muscle strain typically resolves with continued therapy and rest.
+Patient: That's reassuring. Thank you so much.
+```
+
+You can copy this transcript and paste it into the Streamlit app to see how the system processes real conversations and generates medical documentation.
+
+### 4. Running the Streamlit Web Interface
+
+If you want to use the interactive web interface locally:
+```bash
+streamlit run app.py
+```
+
+The app will open in your browser automatically at `http://localhost:8501`. You can paste any doctor-patient transcript and see the results in real-time.
+
 
 ## Output Files
 
-- **`structured_summary.json`** → Extracted medical details and summarized clinical note
-- **`sentiment_intent.json`** → Patient sentiment and intent classification
-- **`soap_note.json`** → Structured SOAP note in clinical format
+The system generates three JSON files:
 
----
+- **structured_summary.json** - Contains extracted symptoms, diagnoses, treatments, and a clinical summary
+- **sentiment_intent.json** - Shows the patient's emotional state and what they were trying to communicate
+- **soap_note.json** - A complete SOAP-formatted note ready for clinical use
 
-## Demo
 
-An interactive demo of the system has been deployed using Streamlit to showcase real-time processing of medical transcripts.
 
-🔗 **Demo Link:** (add Streamlit app URL here)
+## Challenges I Faced
 
-The Streamlit deployment is provided as an optional enhancement beyond the required submission.
+During development, I encountered several interesting challenges:
 
----
+- Getting the medical entity recognition to work accurately required fine-tuning with SciSpacy's specialized models
+- Balancing between automation and medical accuracy was tricky - the system needed to be helpful but also safe
+- The SOAP note formatting required careful mapping of conversational text to structured clinical categories
+- Sentiment analysis in medical contexts is nuanced - a patient saying "I'm worried" might be normal concern or significant anxiety
 
-## Contributors
+## Future Improvements
 
-- Harshit Jain
+There are several ways this could be enhanced:
 
----
+- Add support for audio transcription so it works directly with recordings
+- Implement multi-language support for non-English consultations  
+- Create a feedback loop where doctors can correct the system and improve its accuracy over time
+- Add integration with existing Electronic Health Record (EHR) systems
+- Include more sophisticated clinical decision support features
 
 ## Acknowledgments
 
-- SciSpacy for medical NLP capabilities
-- HuggingFace for pre-trained transformer models
-- The open-source community for supporting healthcare AI innovation
+This project builds on some excellent open-source tools:
+
+- The SciSpacy team for their medical NLP models
+- HuggingFace for making state-of-the-art transformers accessible
+- The broader healthcare AI research community for advancing this important field
