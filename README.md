@@ -1,4 +1,3 @@
-# physician_notetaker
 # Physician Notetaker
 
 ## Overview
