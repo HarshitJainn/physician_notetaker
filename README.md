@@ -47,8 +47,8 @@ Physician-Notetaker/
 │   ├── intent.py                  # Intent detection
 │   ├── soap_mapper.py             # SOAP note formatting
 │   ├── pipeline.py                # Main NLP pipeline
-│   ├── pipeline_ps2.py            # Sentiment analysis pipeline
-│   └── pipeline_ps3.py            # SOAP generation pipeline
+│   ├── pipeline_2.py            # Sentiment analysis pipeline
+│   └── pipeline_3.py            # SOAP generation pipeline
 ├── app.py                         # streamlit app
 ├── output/                         # Generated results
 │   ├── structured_summary.json
@@ -68,7 +68,7 @@ Physician-Notetaker/
 First, clone this repository and navigate to the project directory:
 
 ```bash
-git clone <your-repository-link>
+git clone https://github.com/HarshitJainn/physician_notetaker.git
 cd Physician-Notetaker
 ```
 
