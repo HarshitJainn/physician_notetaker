@@ -1,0 +1,4 @@
+Doctor: How are you feeling today?
+Patient: I had a car accident. My neck and back hurt a lot for four weeks.
+Doctor: Did you receive treatment?
+Patient: Yes, I had ten physiotherapy sessions, and now I only have occasional back pain.
