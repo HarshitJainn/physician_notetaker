@@ -173,6 +173,38 @@ During development, I encountered several interesting challenges:
 - The SOAP note formatting required careful mapping of conversational text to structured clinical categories
 - Sentiment analysis in medical contexts is nuanced - a patient saying "I'm worried" might be normal concern or significant anxiety
 
+## Technical Answers asked in Assignment - 
+
+### How would you handle ambiguous or missing medical data in the transcript?
+In healthcare, it’s important not to guess or hallucinate information. If certain details are missing in the transcript, the system explicitly marks them as “not mentioned” instead of making assumptions. For ambiguous information, uncertainty is preserved and flagged for clinician review to ensure safety and transparency.
+
+---
+
+### What pre-trained NLP models would you use for medical summarization?
+Transformer-based models such as BART or T5 are well suited for summarization tasks. For medical contexts, domain-adapted variants like BioBERT or ClinicalBERT are preferred, as they better understand clinical terminology and documentation style.
+
+---
+
+### How would you fine-tune BERT for medical sentiment detection?
+A domain-specific model like ClinicalBERT would be fine-tuned on labeled patient utterances with healthcare-relevant sentiment classes such as Anxious, Neutral, and Reassured. Training would focus only on patient-spoken text, followed by validation using clinician-reviewed samples.
+
+---
+
+### What datasets would you use for training a healthcare-specific sentiment model?
+Public clinical datasets such as MIMIC-III or MIMIC-IV and i2b2 datasets would be used. These can be complemented with curated or synthetic doctor–patient conversations annotated for emotional context.
+
+---
+
+### How would you train an NLP model to map medical transcripts into SOAP format?
+The model would be trained using paired datasets of transcripts and their corresponding SOAP notes. Sequence-to-sequence models like T5 or BART can be fine-tuned with section-aware prompts, and outputs should be reviewed by clinicians to ensure clinical correctness.
+
+---
+
+### What rule-based or deep-learning techniques would improve the accuracy of SOAP note generation?
+A hybrid approach works best. Rule-based templates ensure correct SOAP structure, while deep-learning models handle language understanding and summarization. Medical entity extraction and confidence checks further improve reliability and safety.
+
+
+
 ## Future Improvements
 
 There are several ways this could be enhanced:
