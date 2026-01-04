@@ -1,0 +1,7 @@
+spacy
+scispacy
+transformers
+torch
+keybert
+sentence-transformers
+streamlit
